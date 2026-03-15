@@ -4,8 +4,7 @@
   <meta charset="UTF-8" />
   <title>Hunger Games Simulator</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 1rem; }
-    textarea { width: 100%; height: 150px; }
+    body { font-family: sans-serif; max-width: 900px; margin: 0 auto; padding: 1rem; }
     .hidden { display: none; }
     .tribute-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
     .tribute {
@@ -24,24 +23,35 @@
       border-radius: 4px;
     }
     .dead { text-decoration: line-through; color: #888; opacity: 0.6; }
+    #castForm div { margin-bottom: 8px; }
+    #castForm input { margin-right: 4px; }
   </style>
 </head>
 <body>
   <h1>Hunger Games Simulator</h1>
 
+  <!-- SETUP SECTION -->
   <section id="setup">
-    <h2>Setup tributes</h2>
-    <p>Enter one tribute per line. Format: <code>Name,District,ImageURL(optional)</code></p>
-    <textarea id="tributeInput">Katniss,12,https://example.com/katniss.jpg
-Peeta,12,https://example.com/peeta.jpg
-Cato,2
-Clove,2
-Rue,11
-Thresh,11</textarea>
-    <br />
+    <h2>Setup Cast</h2>
+
+    <label for="castSize">Cast Size: <span id="castSizeLabel">10</span></label>
+    <input type="range" id="castSize" min="2" max="48" value="10" />
+
+    <button id="editCastBtn">Edit Cast</button>
+
+    <div id="castEditor" class="hidden">
+      <h3>Edit Cast</h3>
+      <div id="castForm"></div>
+      <button id="saveCastBtn">Save Cast</button>
+    </div>
+
+    <h3>Current Cast</h3>
+    <ul id="castPreview"></ul>
+
     <button id="startBtn">Start Simulation</button>
   </section>
 
+  <!-- SIMULATION SECTION -->
   <section id="sim" class="hidden">
     <h2 id="phaseTitle">Bloodbath</h2>
     <button id="nextBtn">Next phase</button>
