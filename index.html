@@ -1,131 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Hunger Games Simulator</title>
-
-<style>
-body{
-  font-family: Arial;
-  background:#111;
-  color:white;
-  text-align:center;
-}
-
-input{
-  padding:8px;
-}
-
-button{
-  padding:8px 12px;
-  margin:5px;
-}
-
-#playerList{
-  margin-top:10px;
-}
-</style>
-
+  <meta charset="UTF-8" />
+  <title>Hunger Games Simulator</title>
+  <style>
+    body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 1rem; }
+    textarea { width: 100%; height: 150px; }
+    .hidden { display: none; }
+    .tribute-list span { margin-right: 0.5rem; }
+    .dead { text-decoration: line-through; color: #888; }
+  </style>
 </head>
-
 <body>
+  <h1>Hunger Games Simulator</h1>
 
-<h1>Hunger Games Simulator</h1>
+  <section id="setup">
+    <h2>Setup tributes</h2>
+    <p>Enter one tribute per line. Optionally: <code>Name,District</code></p>
+    <textarea id="tributeInput">Katniss,12
+Peeta,12
+Cato,2
+Clove,2
+Rue,11
+Thresh,11</textarea>
+    <br />
+    <button id="startBtn">Start Simulation</button>
+  </section>
 
-<input id="playerName" placeholder="Enter player name">
-<button onclick="addPlayer()">Add Player</button>
+  <section id="sim" class="hidden">
+    <h2 id="phaseTitle">Bloodbath</h2>
+    <button id="nextBtn">Next phase</button>
 
-<ul id="playerList"></ul>
+    <h3>Events</h3>
+    <div id="log"></div>
 
-<button onclick="startGame()">Start Simulation</button>
+    <h3>Tributes</h3>
+    <div id="tributes" class="tribute-list"></div>
+  </section>
 
-<div id="game"></div>
-
-<script>
-
-let players = [];
-let alive = [];
-let day = 1;
-
-function addPlayer(){
-
-  let input = document.getElementById("playerName");
-  let name = input.value.trim();
-
-  if(name === "") return;
-
-  players.push({name:name, alive:true});
-
-  updatePlayerList();
-
-  input.value = "";
-}
-
-function updatePlayerList(){
-
-  let list = document.getElementById("playerList");
-  list.innerHTML = "";
-
-  players.forEach(p=>{
-    let li = document.createElement("li");
-    li.textContent = p.name;
-    list.appendChild(li);
-  });
-
-}
-
-function startGame(){
-
-  if(players.length < 2){
-    alert("Add at least 2 players!");
-    return;
-  }
-
-  alive = JSON.parse(JSON.stringify(players));
-
-  document.getElementById("game").innerHTML = "<h2>Simulation Starting...</h2>";
-
-  setTimeout(nextDay,1000);
-
-}
-
-function nextDay(){
-
-  if(alive.length <= 1){
-    document.getElementById("game").innerHTML += `<h2>${alive[0].name} wins!</h2>`;
-    return;
-  }
-
-  let a = alive[Math.floor(Math.random()*alive.length)];
-  let b = alive[Math.floor(Math.random()*alive.length)];
-
-  while(a === b){
-    b = alive[Math.floor(Math.random()*alive.length)];
-  }
-
-  let text;
-
-  if(Math.random() < 0.4){
-
-    b.alive = false;
-    alive = alive.filter(p=>p.alive);
-
-    text = `${a.name} eliminates ${b.name}`;
-
-  } else {
-
-    text = `${a.name} searches for supplies`;
-
-  }
-
-  document.getElementById("game").innerHTML += `<p>Day ${day}: ${text}</p>`;
-
-  day++;
-
-  setTimeout(nextDay,1500);
-
-}
-
-</script>
-
+  <script src="main.js"></script>
 </body>
 </html>
