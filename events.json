@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "minParticipants": 1,
+    "maxParticipants": 1,
+    "fatalities": 0,
+    "descriptionTemplate": "{0} finds a backpack full of supplies."
+  },
+  {
+    "id": 2,
+    "minParticipants": 2,
+    "maxParticipants": 2,
+    "fatalities": 1,
+    "descriptionTemplate": "{0} kills {1} with a spear."
+  },
+  {
+    "id": 3,
+    "minParticipants": 3,
+    "maxParticipants": 3,
+    "fatalities": 2,
+    "descriptionTemplate": "{0}, {1}, and {2} get into a fight. Only {0} survives."
+  }
+]
