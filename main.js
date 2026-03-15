@@ -56,9 +56,26 @@ function updateCastPreview() {
   preview.innerHTML = "";
 
   cast.forEach((t, i) => {
-    const li = document.createElement("li");
-    li.textContent = `${i + 1}. ${t.name} (D${t.district})`;
-    preview.appendChild(li);
+    const card = document.createElement("div");
+    card.className = "cast-card";
+
+    const img = document.createElement("img");
+    img.src = t.imageUrl || "https://via.placeholder.com/150?text=No+Image";
+    img.alt = t.name;
+
+    const name = document.createElement("div");
+    name.textContent = t.name;
+
+    const dist = document.createElement("div");
+    dist.style.fontSize = "0.8rem";
+    dist.style.color = "#555";
+    dist.textContent = `District ${t.district}`;
+
+    card.appendChild(img);
+    card.appendChild(name);
+    card.appendChild(dist);
+
+    preview.appendChild(card);
   });
 }
 
@@ -189,12 +206,10 @@ function renderTributes() {
     box.className = "tribute";
     if (!t.alive) box.classList.add("dead");
 
-    if (t.imageUrl) {
-      const img = document.createElement("img");
-      img.src = t.imageUrl;
-      img.alt = t.name;
-      box.appendChild(img);
-    }
+    const img = document.createElement("img");
+    img.src = t.imageUrl || "https://via.placeholder.com/80?text=No+Image";
+    img.alt = t.name;
+    box.appendChild(img);
 
     const text = document.createElement("span");
     text.textContent = `${t.name} (D${t.district})`;
@@ -211,10 +226,41 @@ function renderPhaseScreen() {
 
   const log = document.getElementById("log");
   log.innerHTML = "";
-  latest.events.forEach(text => {
+
+  latest.events.forEach(eventText => {
+    const wrapper = document.createElement("div");
+    wrapper.style.marginBottom = "16px";
+
+    // Detect which tributes are in the event
+    const names = state.tributes.map(t => t.name);
+    const matched = names.filter(n => eventText.includes(n));
+
+    const imgRow = document.createElement("div");
+    imgRow.style.display = "flex";
+    imgRow.style.gap = "8px";
+    imgRow.style.marginBottom = "6px";
+
+    matched.forEach(name => {
+      const t = state.tributes.find(x => x.name === name);
+      if (!t) return;
+
+      const img = document.createElement("img");
+      img.src = t.imageUrl || "https://via.placeholder.com/80?text=No+Image";
+      img.width = 80;
+      img.height = 80;
+      img.style.objectFit = "cover";
+      img.style.borderRadius = "4px";
+
+      imgRow.appendChild(img);
+    });
+
+    wrapper.appendChild(imgRow);
+
     const p = document.createElement("p");
-    p.textContent = text;
-    log.appendChild(p);
+    p.textContent = eventText;
+    wrapper.appendChild(p);
+
+    log.appendChild(wrapper);
   });
 
   renderTributes();
