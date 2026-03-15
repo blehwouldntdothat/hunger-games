@@ -205,7 +205,7 @@ function renderTributes() {
 
   state.tributes.forEach(t => {
     const card = document.createElement("div");
-    card.className = "cast-card";
+    card.className = "cast-card small-card";
     if (!t.alive) card.classList.add("dead");
 
     const name = document.createElement("div");
