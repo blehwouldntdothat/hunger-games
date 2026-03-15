@@ -59,20 +59,22 @@ function updateCastPreview() {
     const card = document.createElement("div");
     card.className = "cast-card";
 
-    const img = document.createElement("img");
-    img.src = t.imageUrl || "https://via.placeholder.com/150?text=No+Image";
-    img.alt = t.name;
-
     const name = document.createElement("div");
+    name.className = "name";
     name.textContent = t.name;
 
+    const img = document.createElement("img");
+    img.src =
+      t.imageUrl ||
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdqLQxWyonrlxQ-evBP576SxutCnveCYkYGw&s";
+    img.alt = t.name;
+
     const dist = document.createElement("div");
-    dist.style.fontSize = "0.8rem";
-    dist.style.color = "#555";
+    dist.className = "district";
     dist.textContent = `District ${t.district}`;
 
-    card.appendChild(img);
     card.appendChild(name);
+    card.appendChild(img);
     card.appendChild(dist);
 
     preview.appendChild(card);
@@ -159,15 +161,15 @@ function stepPhase() {
 
   if (alive.length <= 1) {
     const title = "Final Result";
-    const events = [];
+    const eventsArr = [];
 
     if (alive.length === 1) {
-      events.push(`${alive[0].name} wins the Hunger Games!`);
+      eventsArr.push(`${alive[0].name} wins the Hunger Games!`);
     } else {
-      events.push("No one survives.");
+      eventsArr.push("No one survives.");
     }
 
-    state.phases.push({ title, events });
+    state.phases.push({ title, events: eventsArr });
     renderPhaseScreen();
     document.getElementById("nextBtn").disabled = true;
     return;
@@ -202,20 +204,29 @@ function renderTributes() {
   div.innerHTML = "";
 
   state.tributes.forEach(t => {
-    const box = document.createElement("div");
-    box.className = "tribute";
-    if (!t.alive) box.classList.add("dead");
+    const card = document.createElement("div");
+    card.className = "cast-card";
+    if (!t.alive) card.classList.add("dead");
+
+    const name = document.createElement("div");
+    name.className = "name";
+    name.textContent = t.name;
 
     const img = document.createElement("img");
-    img.src = t.imageUrl || "https://via.placeholder.com/80?text=No+Image";
+    img.src =
+      t.imageUrl ||
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdqLQxWyonrlxQ-evBP576SxutCnveCYkYGw&s";
     img.alt = t.name;
-    box.appendChild(img);
 
-    const text = document.createElement("span");
-    text.textContent = `${t.name} (D${t.district})`;
-    box.appendChild(text);
+    const dist = document.createElement("div");
+    dist.className = "district";
+    dist.textContent = `District ${t.district}`;
 
-    div.appendChild(box);
+    card.appendChild(name);
+    card.appendChild(img);
+    card.appendChild(dist);
+
+    div.appendChild(card);
   });
 }
 
@@ -229,29 +240,43 @@ function renderPhaseScreen() {
 
   latest.events.forEach(eventText => {
     const wrapper = document.createElement("div");
-    wrapper.style.marginBottom = "16px";
+    wrapper.style.marginBottom = "20px";
 
-    // Detect which tributes are in the event
     const names = state.tributes.map(t => t.name);
     const matched = names.filter(n => eventText.includes(n));
 
     const imgRow = document.createElement("div");
     imgRow.style.display = "flex";
-    imgRow.style.gap = "8px";
-    imgRow.style.marginBottom = "6px";
+    imgRow.style.gap = "12px";
+    imgRow.style.marginBottom = "8px";
 
     matched.forEach(name => {
       const t = state.tributes.find(x => x.name === name);
       if (!t) return;
 
-      const img = document.createElement("img");
-      img.src = t.imageUrl || "https://via.placeholder.com/80?text=No+Image";
-      img.width = 80;
-      img.height = 80;
-      img.style.objectFit = "cover";
-      img.style.borderRadius = "4px";
+      const card = document.createElement("div");
+      card.className = "cast-card";
+      card.style.width = "120px";
 
-      imgRow.appendChild(img);
+      const nm = document.createElement("div");
+      nm.className = "name";
+      nm.textContent = t.name;
+
+      const img = document.createElement("img");
+      img.src =
+        t.imageUrl ||
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQdqLQxWyonrlxQ-evBP576SxutCnveCYkYGw&s";
+      img.alt = t.name;
+
+      const dist = document.createElement("div");
+      dist.className = "district";
+      dist.textContent = `District ${t.district}`;
+
+      card.appendChild(nm);
+      card.appendChild(img);
+      card.appendChild(dist);
+
+      imgRow.appendChild(card);
     });
 
     wrapper.appendChild(imgRow);
