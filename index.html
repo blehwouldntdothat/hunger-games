@@ -1,15 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Hunger Games Simulator</title>
+
+<style>
+body{
+  font-family: Arial;
+  background:#111;
+  color:white;
+  text-align:center;
+}
+
+input{
+  padding:8px;
+}
+
+button{
+  padding:8px 12px;
+  margin:5px;
+}
+
+#playerList{
+  margin-top:10px;
+}
+</style>
+
+</head>
+
+<body>
+
 <h1>Hunger Games Simulator</h1>
 
-<div id="setup">
-  <input id="playerName" placeholder="Enter player name">
-  <button onclick="addPlayer()">Add Player</button>
+<input id="playerName" placeholder="Enter player name">
+<button onclick="addPlayer()">Add Player</button>
 
-  <ul id="playerList"></ul>
+<ul id="playerList"></ul>
 
-  <button onclick="startGame()">Start Simulation</button>
-</div>
+<button onclick="startGame()">Start Simulation</button>
 
-<div id="game" style="display:none;">
-  <h2 id="dayTitle"></h2>
-  <div id="events"></div>
-</div>
+<div id="game"></div>
+
+<script>
+
+let players = [];
+let alive = [];
+let day = 1;
+
+function addPlayer(){
+
+  let input = document.getElementById("playerName");
+  let name = input.value.trim();
+
+  if(name === "") return;
+
+  players.push({name:name, alive:true});
+
+  updatePlayerList();
+
+  input.value = "";
+}
+
+function updatePlayerList(){
+
+  let list = document.getElementById("playerList");
+  list.innerHTML = "";
+
+  players.forEach(p=>{
+    let li = document.createElement("li");
+    li.textContent = p.name;
+    list.appendChild(li);
+  });
+
+}
+
+function startGame(){
+
+  if(players.length < 2){
+    alert("Add at least 2 players!");
+    return;
+  }
+
+  alive = JSON.parse(JSON.stringify(players));
+
+  document.getElementById("game").innerHTML = "<h2>Simulation Starting...</h2>";
+
+  setTimeout(nextDay,1000);
+
+}
+
+function nextDay(){
+
+  if(alive.length <= 1){
+    document.getElementById("game").innerHTML += `<h2>${alive[0].name} wins!</h2>`;
+    return;
+  }
+
+  let a = alive[Math.floor(Math.random()*alive.length)];
+  let b = alive[Math.floor(Math.random()*alive.length)];
+
+  while(a === b){
+    b = alive[Math.floor(Math.random()*alive.length)];
+  }
+
+  let text;
+
+  if(Math.random() < 0.4){
+
+    b.alive = false;
+    alive = alive.filter(p=>p.alive);
+
+    text = `${a.name} eliminates ${b.name}`;
+
+  } else {
+
+    text = `${a.name} searches for supplies`;
+
+  }
+
+  document.getElementById("game").innerHTML += `<p>Day ${day}: ${text}</p>`;
+
+  day++;
+
+  setTimeout(nextDay,1500);
+
+}
+
+</script>
+
+</body>
+</html>
