@@ -7,8 +7,23 @@
     body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 1rem; }
     textarea { width: 100%; height: 150px; }
     .hidden { display: none; }
-    .tribute-list span { margin-right: 0.5rem; }
-    .dead { text-decoration: line-through; color: #888; }
+    .tribute-list { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tribute {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 0.9rem;
+    }
+    .tribute img {
+      width: 40px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+    .dead { text-decoration: line-through; color: #888; opacity: 0.6; }
   </style>
 </head>
 <body>
@@ -16,9 +31,9 @@
 
   <section id="setup">
     <h2>Setup tributes</h2>
-    <p>Enter one tribute per line. Optionally: <code>Name,District</code></p>
-    <textarea id="tributeInput">Katniss,12
-Peeta,12
+    <p>Enter one tribute per line. Format: <code>Name,District,ImageURL(optional)</code></p>
+    <textarea id="tributeInput">Katniss,12,https://example.com/katniss.jpg
+Peeta,12,https://example.com/peeta.jpg
 Cato,2
 Clove,2
 Rue,11
@@ -31,7 +46,7 @@ Thresh,11</textarea>
     <h2 id="phaseTitle">Bloodbath</h2>
     <button id="nextBtn">Next phase</button>
 
-    <h3>Events</h3>
+    <h3>Events this phase</h3>
     <div id="log"></div>
 
     <h3>Tributes</h3>
